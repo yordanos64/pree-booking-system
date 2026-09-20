@@ -1,0 +1,108 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  PASSENGER
+  DRIVER
+  ADMIN
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  password      String
+  name          String
+  phoneNumber       String?     @unique
+  role          Role           @default(PASSENGER)
+  bookings      Booking[]
+  refreshTokens RefreshToken[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model Terminal {
+
+  id         String   @id @default(uuid())
+  name       String
+  location   String
+  originroutes     Route[]  @relation("OriginTerminal")
+  destRoutes Route[]  @relation("DestinationTerminal")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Route {
+  id            String   @id @default(uuid())
+  originId      String
+  origin        Terminal @relation("OriginTerminal", fields: [originId], references: [id])
+  destinationId String
+  destination   Terminal @relation("DestinationTerminal", fields: [destinationId], references: [id])
+  price         Float
+  trips         Trip[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Vehicle {
+  id          String   @id @default(uuid())
+  plateNumber String   @unique
+  capacity    Int
+  model       String?
+  trips       Trip[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Trip {
+  id             String    @id @default(uuid())
+  routeId        String
+  route          Route     @relation(fields: [routeId], references: [id])
+  vehicleId      String
+  vehicle        Vehicle   @relation(fields: [vehicleId], references: [id])
+  departureTime  DateTime
+  arrivalTime    DateTime?
+  availableSeats Int
+  bookings       Booking[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Booking {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  tripId     String
+  trip       Trip     @relation(fields: [tripId], references: [id])
+  seatNumber Int
+  status     String   @default("PENDING")
+  payment    Payment?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Payment {
+  id        String   @id @default(uuid())
+  bookingId String   @unique
+  booking   Booking  @relation(fields: [bookingId], references: [id])
+  amount    Float
+  status    String   @default("PENDING")
+  provider  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
