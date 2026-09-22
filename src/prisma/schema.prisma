@@ -39,7 +39,7 @@ model RefreshToken {
 model Terminal {
 
   id         String   @id @default(uuid())
-  name       String
+  name       String @unique
   location   String
   originroutes     Route[]  @relation("OriginTerminal")
   destRoutes Route[]  @relation("DestinationTerminal")
