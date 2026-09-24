@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import{Controller,Param,Body,Post,Patch,Get,Delete} from "@nestjs/common";
 
 import{CreateTerminalDto}from "./dto/create-terminal.dto"
@@ -23,6 +24,11 @@ export class TerminalController{
       return this.terminalService.findOne(id);
     }
 }
+=======
+
+
+    
+>>>>>>> 2fa53533f4951a9d155a55e0a781797e641bdcd9
 
 
     
