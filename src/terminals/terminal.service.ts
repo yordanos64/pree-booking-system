@@ -25,4 +25,17 @@ async create(createTerminalDto:CreateTerminalDto){
 
 }
 
+
+  async findAll() {
+    return await  this.prisma. terminal.findMany()
+  }
+
+  async findOne(id:string){
+    const terminal =  await this.prisma.terminal.findUnique({where:{id}})
+  
+if(!terminal){
+    throw  new NotFoundException(`terminal with ${id} not found`);
+}
+return terminal;
+}
 }

@@ -11,27 +11,22 @@ export class TerminalController{
 
     @Post()
      create(@Body() createTerminalDto:CreateTerminalDto){
-        return  this.terminalService.create(createTerminalDto)
+        return  this.terminalService.create(createTerminalDto)}
+@Get()
+  findAll(){
+    return this.terminalService.findAll()
+  }
 
+  @Get(":id")
+  findOne(@Param('id') id:string)
+    {
+      return this.terminalService.findOne(id);
     }
-//     @Get(':id')  
-// async findOne(@Param('id')id:string){
-// return  this.terminalService.findOne(id)}
-// @Get()
-//  findMany(){
-//     return  this.terminalService.findMany()
-// }
-
-    
-// @Patch(':id')
-//  update(
-//     @Param('id') id:string,
-//     @Body() updateTerminalDto:UpdateTerminalDto
-// )
-// { return  this.terminalService.update(id,updateTerminalDto)}
-
-
-    
 }
+
+
+    
+
+
 
 

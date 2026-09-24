@@ -100,7 +100,7 @@ export class UserService {
                 id:existingUser.id,
                 email:existingUser.email,
                 name:existingUser.name,
-                IsPhoneNumber:existingUser.phoneNumber,
+                // IsPhoneNumber:existingUser.phoneNumber,
                 role:existingUser.role
             }
         };
